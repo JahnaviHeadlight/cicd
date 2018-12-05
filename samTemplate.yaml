@@ -12,9 +12,4 @@ Resources:
       MemorySize: 128
       Timeout: 30
       Role: 'arn:aws:iam::*:*'
-      Events:
-        getAZsAPI:
-        Type: Api
-        Properties:
-          path: /getazs
-          Method: get
+
