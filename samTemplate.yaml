@@ -18,6 +18,3 @@ Resources:
         Properties:
           path: /getazs
           Method: get
-      Environment:
-        Variables:
-        REGION: eu-west-1
