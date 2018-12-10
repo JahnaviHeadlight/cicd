@@ -1,10 +1,9 @@
 version: 0.1
+
 phases:
-  install:
-    commands:
-      - aws cloudformation package --template-file samTemplate.yaml --s3-bucket testheadlight --output-template-file outputSamTemplate.yaml
-artifacts:
-  type: zip
-  files:
-    - samTemplate.yaml
-    - outputSamTemplate.yaml      
+    install:
+         commands:
+            - npm install -g serverless --save
+    post_build:
+         commands:
+            - serverless deploy --region eu-west-1 --verbose        

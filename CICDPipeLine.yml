@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Automate provisioning of CodeBuild with CodePipeline CodeCommit and CodeDeploy. **WARNING** This template creates one or more Amazon EC2 instances. You will be billed for the AWS resources used if you create a stack from this template.
+Parameters:
+  RepoUrl:
+    Type: String
+    Description: "Please enter repository URL"
+Resources:
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: codebuild.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+  CodeBuildTestProject:
+    Type: AWS::CodeBuild::Project
+    DependsOn: CodeBuildRole
+    Properties:
+      Artifacts:
+        Type: no_artifacts
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:8.10
+        Type: LINUX_CONTAINER
+      Name: !Sub ${AWS::StackName}CodeBuildJavaProject
+      ServiceRole: !Ref CodeBuildRole
+      Source:
+        Type: GIT
+        Location: !Ref RepoUrl
