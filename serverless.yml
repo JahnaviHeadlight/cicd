@@ -3,7 +3,6 @@ service: CodeBuild
 provider:
   name: aws
   runtime: nodejs8.10
-  profile: default
   region: eu-west-1
   stage: dev
  
