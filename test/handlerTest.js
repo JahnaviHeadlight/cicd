@@ -1,6 +1,6 @@
 'use Strict';
 const expect = require('chai').expect;
-const main = require("../handler");
+const main = require("handler");
 
 
 describe('Handler', function mainTest() {
