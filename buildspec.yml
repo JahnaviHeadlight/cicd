@@ -9,7 +9,7 @@ phases:
 
     pre_build:        
          commands:
-            - npm run test -s
+            - npm run test -s || exit 1
     post_build:
          commands:
             - serverless deploy --region eu-west-1 --verbose       
