@@ -4,6 +4,10 @@ phases:
     install:
          commands:
             - npm install -g serverless --save
+            - npm install serverless-plugin-split-stacks --save
+            - npm install mocha@5.2.0 chai@4.2.0 --save
+
     post_build:
          commands:
+            - npm run test -s
             - serverless deploy --region eu-west-1 --verbose        

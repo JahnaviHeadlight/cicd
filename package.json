@@ -1,0 +1,21 @@
+{
+  "name": "consultantprofile",
+  "version": "1.0.0",
+  "description": "ConsultantProfile APIGateway",
+  "main": "main.js",
+  "directories": {
+    "test": "chai"
+  },
+  "scripts": {
+    "test": "mocha || true"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "4.2.0",
+    "mocha": "5.2.0"
+  },
+  "dependencies": {
+    "mysql2": "^1.6.4"
+  }
+}
