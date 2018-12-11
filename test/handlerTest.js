@@ -1,6 +1,6 @@
 'use Strict';
 const expect = require('chai').expect;
-const main = require("handler");
+const main = require("../handler");
 
 
 describe('Handler', function mainTest() {
@@ -16,7 +16,7 @@ describe('Handler', function mainTest() {
         console.log('SaveItem Response:  '+JSON.stringify(response));
       if(response.statusCode == '400')
       expect(response.statusCode).to.eq('400');
-      else if(response.statusCode == '200')
+      else if(response.statusCode == 200)
       expect(response.statusCode).to.eq('200');      
     });
 
