@@ -3,6 +3,7 @@ version: 0.1
 phases:
     install:
          commands:
+            - npm install jq
             - npm install -g serverless 
             - npm install serverless-plugin-split-stacks 
     build:
@@ -12,5 +13,5 @@ phases:
 artifacts:       
   type: zip
   files:
-    - .serverless/template-export.json          
+    - .serverless/*          
       
