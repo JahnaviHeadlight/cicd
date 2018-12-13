@@ -8,7 +8,6 @@ phases:
     build:
          commands:
             - serverless package
-            - ./upload.sh
             - cp .serverless/cloudformation-template-update-stack.json .serverless/template-export.json 
 artifacts:       
   type: zip
