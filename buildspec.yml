@@ -3,13 +3,15 @@ version: 0.1
 phases:
     install:
          commands:
-            - npm install -g serverless --save
-            - npm install serverless-plugin-split-stacks --save
-            - npm install mocha@5.2.0 chai@4.2.0 --save
-
-    pre_build:        
+            - npm install -g serverless 
+            - npm install serverless-plugin-split-stacks 
+    build:
          commands:
-            - npm run test -s || process.exit(1)
-    post_build:
-         commands:
-            - serverless deploy --region eu-west-1 --verbose       
+            - serverless package
+            - ./upload.sh
+            - cp .serverless/cloudformation-template-update-stack.json .serverless/template-export.json 
+artifacts:       
+  type: zip
+  files:
+    - .serverless/*          
+      

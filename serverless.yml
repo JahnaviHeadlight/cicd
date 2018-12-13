@@ -2,6 +2,7 @@ service: CodeBuild
 
 provider:
   name: aws
+  deploymentBucket: testheadlight
   runtime: nodejs8.10
   region: eu-west-1
   stage: dev

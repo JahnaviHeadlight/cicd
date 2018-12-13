@@ -15,6 +15,18 @@ Parameters:
     Description: "Please provide the owner name"
 
 Resources:
+  CodeFlormationServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: cloudformation.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
   CodeBuildRole:
     Type: AWS::IAM::Role
     Properties:
@@ -60,6 +72,35 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
       AccessControl: BucketOwnerFullControl
+  CodeBuildSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Endpoint:
+          Ref: EmailAddress
+        Protocol: email
+  CodePipeLineEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Event Rule"
+      EventPattern:
+        source:
+        - aws.codepipeline
+        detail-type:
+        - CodePipeline Pipeline Execution State Change
+        detail:
+          state:
+          - FAILED
+      State: "ENABLED"
+      Targets:
+        - 
+          Arn:
+            Ref: !CodeBuildSNSTopic
+          Id: "Ops Topic"
+          InputTransformer:
+            InputTemplate: '"Pipeline has failed"'
+            InputPathsMap:
+              pipeline: "$.detail.pipeline"                   
   CodePipelineStack:
     Type: AWS::CodePipeline::Pipeline
     Properties:
@@ -84,6 +125,20 @@ Resources:
               Branch: master
               OAuthToken: !Ref GitHubOAuthToken
             RunOrder: 1
+          - Name: Test
+            ActionTypeId:
+              Category: Source
+              Owner: ThirdParty
+              Version: 1
+              Provider: GitHub
+            OutputArtifacts:
+            -  Name: TestArtifacts
+            Configuration:
+              Owner: !Ref GitHubOwner
+              Branch: master
+              Repo: !Ref RepositoryName
+              OAuthToken: !Ref GitHubOAuthToken
+            RunOrder: 1
         - Name: Build
           Actions:
           - Name: Build
@@ -99,16 +154,26 @@ Resources:
             Configuration:
                 ProjectName: !Ref CodeBuildTestProject
             RunOrder: 1
-        - Name: Test
+        - Name: Staging
           Actions:
-          - Name: Test
+          - Name: Staging
             ActionTypeId:
-                Category: Invoke
+                Category: Deploy
                 Owner: AWS
                 Version: 1
-                Provider: Lambda
+                Provider: CloudFormation
+            OutputArtifacts:
+              - Name: CreatedTestCFNStack
             Configuration:
-                FunctionName: !Ref CodeBuildTestLambda
-            RunOrder: 1
+                ActionMode: CREATE_UPDATE
+                Capabilities:  CAPABILITY_NAMED_IAM
+                RoleArn: Fn::GetAtt:: [ CodeFlormationServiceRole, Arn ]
+                StackName:
+                  Fn::Sub: Test-${AWS::StackName}
+                TemplatePath: CFNTemplateArtifact::master-stack.json
+            RunOrder: 2
+
+
+
 
 
