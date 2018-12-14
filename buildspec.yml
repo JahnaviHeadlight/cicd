@@ -3,9 +3,9 @@ version: 0.1
 phases:
     install:
          commands:
-            - npm install jq
-            - npm install -g serverless 
-            - npm install serverless-plugin-split-stacks 
+            - npm install jq -y
+            - npm install -g serverless -y
+            - npm install serverless-plugin-split-stacks -y
     build:
          commands:
             - serverless package
