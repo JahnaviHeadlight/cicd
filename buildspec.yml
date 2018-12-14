@@ -3,13 +3,12 @@ version: 0.1
 phases:
     install:
          commands:
-            - npm install jq -y
             - npm install -g serverless -y
             - npm install serverless-plugin-split-stacks -y
     build:
          commands:
             - serverless package
-            - bash upload.sh
+            - aws s3 cp .serverless/$ARTIFACT s3://$S3_BUCKET/$S3_PREFIX/$ARTIFACT
             - cp .serverless/cloudformation-template-update-stack.json .serverless/template-export.json 
 artifacts:       
   type: zip
