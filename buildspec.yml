@@ -12,6 +12,7 @@ phases:
             - set -eu
             - set o pipefile
             - STATE_FILE=.serverless/serverless-state.json
+            - echo ${S3_PREFIX}
             - S3_PREFIX= ${STATE_FILE}.package.artifactDirectoryName
             - ARTIFACT= ${STATE_FILE}.package.artifact
             - AWS_PROFILE=${AWS_PROFILE:-}
