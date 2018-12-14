@@ -8,18 +8,6 @@ phases:
             - npm install --global jq-cli-wrapper
     build:
          commands:
-            - serverless package
-            - set -eu
-            - set o pipefile
-            - STATE_FILE=.serverless/serverless-state.json
-            - echo ${S3_PREFIX}
-            - S3_PREFIX= ${STATE_FILE}.package.artifactDirectoryName
-            - ARTIFACT= ${STATE_FILE}.package.artifact
-            - AWS_PROFILE=${AWS_PROFILE:-}
-
-            - PROFILE_OPTS=""
-            - if [ "" != "$AWS_PROFILE" ]; then PROFILE_OPTS="--profile $AWS_PROFILE" fi
-            - sudo aws $PROFILE_OPTS s3 cp .serverless/$ARTIFACT s3://$S3_BUCKET/$S3_PREFIX/$ARTIFACT
             - cp .serverless/cloudformation-template-update-stack.json .serverless/template-export.json 
 artifacts:       
   type: zip
