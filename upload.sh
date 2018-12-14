@@ -4,11 +4,9 @@ set -eu
 set o pipefile
 
 
-curl https://stedolan.github.io/jq/download/linux64/jq 
-
 STATE_FILE=.serverless/serverless-state.json
-S3_PREFIX= $( jq -r '.package.artifactDirectoryName' < "$STATE_FILE")
-ARTIFACT= $( jq -r '.package.artifact' < "$STATE_FILE")
+S3_PREFIX= $( jq ' -r .package.artifactDirectoryName' < "$STATE_FILE")
+ARTIFACT= $( jq '-r .package.artifact' < "$STATE_FILE")
 AWS_PROFILE=${AWS_PROFILE:-}
 
 PROFILE_OPTS=""
