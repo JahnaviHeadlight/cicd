@@ -8,6 +8,7 @@ phases:
             - npm install --global jq-cli-wrapper
     build:
          commands:
+            - serverless package
             - cp .serverless/cloudformation-template-update-stack.json .serverless/template-export.json 
 artifacts:       
   type: zip
