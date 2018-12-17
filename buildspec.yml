@@ -10,6 +10,7 @@ phases:
          commands:
             - serverless package
             - cp .serverless/cloudformation-template-update-stack.json .serverless/template-export.json 
+            - aws s3 cp .serverles s3://testheadlight/template/ --include '/*.json' --exclude '/*'
 artifacts:       
   type: zip
   files:
